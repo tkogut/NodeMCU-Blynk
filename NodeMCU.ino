@@ -19,6 +19,7 @@ String myText;
 char rdata;
 
 int myValue;
+int myValue1;
 
 // This function sends Arduino's up time every second to Virtual Pin (5).
 // In the app, Widget's reading frequency should be set to PUSH. This means
@@ -28,7 +29,7 @@ void myTimerEvent()
   // You can send any value at any time.
   // Please don't send more that 10 values per second.
   Blynk.virtualWrite(V1, millis() / 1000);
-  Blynk.virtualWrite(V2, "dupa");
+  Blynk.virtualWrite(V3, "dupa");
 }
 
 void setup()
@@ -44,6 +45,7 @@ void setup()
   // Setup a function to be called every second
   timer.setInterval(1000L, sensorvalue1);
   timer.setInterval(1000L, sensorvalue2);
+  timer.setInterval(1000L, sensorvalue3);
 }
 
 void loop()
@@ -61,8 +63,10 @@ void loop()
     if (rdata == '\n')
     {
       String Value = getValue(myString, ',', 0);
-      String Text = getValue(myString, ',', 1);
+      String Value1 = getValue(myString, ',', 1);
+      String Text = getValue(myString, ',', 2);
       myValue = Value.toInt();
+      myValue1 = Value1.toInt();
       myText = Text;
       myString = "";
     }
@@ -77,9 +81,19 @@ void sensorvalue1()
   Serial.println(sdata);
   //Serial.println("----");
 }
+
 void sensorvalue2()
 {
-  Blynk.virtualWrite(V4, myText);
+  int sdata1 = myValue1;
+  Blynk.virtualWrite(V4, sdata1);
+  Serial.println("----");
+  Serial.println(sdata1);
+  //Serial.println("----");
+}
+
+void sensorvalue3()
+{
+  Blynk.virtualWrite(V5, myText);
   //Serial.println("----");
   Serial.println(myText);
   Serial.println("----");
